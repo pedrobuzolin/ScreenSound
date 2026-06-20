@@ -1,19 +1,28 @@
 package br.com.desafio.musicas.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="artistas")
 public class Artista {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String nome;
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
+    @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL, fetch =  FetchType.EAGER)
     private List<Musica> musicas = new ArrayList<>();
 
     public Artista() {}
 
-    public Artista(String nome, String categoria) {
+    public Artista(String nome, Categoria categoria) {
         this.nome = nome;
-        this.categoria = Categoria.fromPortugues(categoria);
+        this.categoria = categoria;
     }
 
     public Long getId() {
@@ -52,6 +61,7 @@ public class Artista {
     @Override
     public String toString() {
         return "Artista: " + nome +
-                " - Categoria: "  + categoria;
+                " - Categoria: "  + categoria +
+                " - Musicas: " + musicas;
     }
 }

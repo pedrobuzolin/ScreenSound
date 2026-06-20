@@ -1,8 +1,15 @@
 package br.com.desafio.musicas.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="musicas")
 public class Musica {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
+    @ManyToOne
     private Artista artista;
 
     public Musica() {}
@@ -37,6 +44,6 @@ public class Musica {
 
     @Override
     public String toString() {
-        return "Musica: " + titulo;
+        return "Musica: " + titulo + " - Artista: " + artista.getNome();
     }
 }
